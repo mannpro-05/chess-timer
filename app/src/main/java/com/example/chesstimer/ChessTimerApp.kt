@@ -5,6 +5,7 @@ import com.example.chesstimer.chesstimer.data.di.repositoryModule
 import com.example.chesstimer.chesstimer.presentation.di.chessTimerModule
 import com.example.chesstimer.datastore.dataStoreModule
 import com.example.chesstimer.di.appModule
+import com.example.core.database.di.databaseModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
@@ -22,12 +23,12 @@ class ChessTimerApp : Application() {
             androidContext(this@ChessTimerApp)
             androidLogger()
 
-
             modules(
                 dataStoreModule,
                 repositoryModule,
                 appModule,
-                chessTimerModule
+                chessTimerModule,
+                databaseModule
             )
         }
     }
