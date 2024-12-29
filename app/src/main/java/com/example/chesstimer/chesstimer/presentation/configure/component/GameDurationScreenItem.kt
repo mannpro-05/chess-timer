@@ -86,27 +86,3 @@ fun EditGameDurationItem(
         )
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-private fun EditGameDurationItemPreview() {
-    EditGameDurationItem(
-        item = "mann",
-        isChecked = false,
-        onItemChecked = {
-
-        }
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SelectGameDurationItemPreview() {
-    SelectGameDurationItem(
-        item = "mann",
-        isSelected = true,
-        onItemSelected = {
-
-        }
-    )
-}

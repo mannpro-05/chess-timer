@@ -19,7 +19,7 @@ class SelectGameDurationViewModel(
     private val repository: SelectGameDurationRepository
 ) : ViewModel() {
 
-    private var selectedPosition: Int = 0
+    private var selectedPosition: Int = -1
 
     private val _event = Channel<SelectGameDurationEvent>()
     val event = _event.receiveAsFlow()
@@ -104,6 +104,14 @@ class SelectGameDurationViewModel(
                     )
                 }
             }
+
+            SelectGameDurationAction.OnFinishEditButtonClicked -> {
+                _state.update {
+                    it.copy(
+                        isInEditMode = false
+                    )
+                }
+            }
         }
     }
 
@@ -119,7 +127,6 @@ class SelectGameDurationViewModel(
         repository.provideSupportedGameDurations().indexOfFirst { supportedDuration ->
             supportedDuration == currentGameDuration
         }.takeIf { index -> index != -1 } ?: 0
-
 }
 
 private fun List<Long>.toUiDurationList(): List<String> = map {

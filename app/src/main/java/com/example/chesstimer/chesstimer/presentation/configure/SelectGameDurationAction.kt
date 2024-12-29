@@ -14,4 +14,6 @@ sealed interface SelectGameDurationAction {
     data object OnConfirmNewGameDuration : SelectGameDurationAction
 
     data object OnEditButtonClicked : SelectGameDurationAction
+
+    data object OnFinishEditButtonClicked : SelectGameDurationAction
 }

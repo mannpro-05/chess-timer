@@ -5,19 +5,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,19 +23,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.chesstimer.chesstimer.presentation.configure.component.Dialog
 import com.example.chesstimer.chesstimer.presentation.configure.component.EditGameDurationItem
 import com.example.chesstimer.chesstimer.presentation.configure.component.SelectGameDurationItem
+import com.example.core.presentation.components.ChessTimerButton
 import com.example.core.presentation.components.ChessTimerScaffold
 import com.example.core.presentation.components.ChessTimerTopAppBar
 import com.example.core.presentation.components.ToolbarClickableIcon
 import com.example.core.presentation.ui.theme.ConfigurationScreenSecondaryColor
-import com.example.core.presentation.ui.theme.PrimaryColor
 import com.example.core.presentation.ui.theme.SurfaceColor
 
 @Composable
@@ -79,7 +73,7 @@ fun UpdateGameDurationScreen(
                         imageVector = if (state.isInEditMode) Icons.Default.Check else Icons.AutoMirrored.Default.ArrowBack,
                         onIconClicked = {
                             if (state.isInEditMode) {
-
+                                onAction(SelectGameDurationAction.OnFinishEditButtonClicked)
                             } else {
                                 onBackButtonClicked()
                             }
@@ -144,25 +138,12 @@ fun UpdateGameDurationScreen(
                     .weight(1f) // Take all remaining space
                     .fillMaxWidth()
             )
-            Button(
-                onClick = {
-                    onAction(SelectGameDurationAction.OnStartButtonClicked)
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = PrimaryColor
-                ),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-                    .padding(horizontal = 12.dp)
-                    .height(50.dp)
-            ) {
-                Text(
+            if (!state.isInEditMode) {
+                ChessTimerButton(
                     text = "Start",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
+                    onClick = {
+                        onAction(SelectGameDurationAction.OnStartButtonClicked)
+                    }
                 )
             }
         }
@@ -234,6 +215,7 @@ fun EditGameDurationList(
     onItemChecked: (Int, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     LazyColumn(
         modifier = modifier.fillMaxWidth()
     ) {
