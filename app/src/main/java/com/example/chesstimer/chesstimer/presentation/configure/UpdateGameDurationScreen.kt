@@ -1,6 +1,5 @@
 package com.example.chesstimer.chesstimer.presentation.configure
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,12 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.RadioButton
@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.example.chesstimer.chesstimer.presentation.configure.component.Dialog
 import com.example.core.presentation.components.ChessTimerScaffold
 import com.example.core.presentation.components.ChessTimerTopAppBar
+import com.example.core.presentation.components.ToolbarClickableIcon
 import com.example.core.presentation.ui.theme.ConfigurationScreenSecondaryColor
 import com.example.core.presentation.ui.theme.PrimaryColor
 import com.example.core.presentation.ui.theme.SurfaceColor
@@ -74,9 +75,28 @@ fun UpdateGameDurationScreen(
         topAppBar = {
             ChessTimerTopAppBar(
                 title = "Time Configuration",
-                hasBackButton = true,
-                onBackButtonClicked = {
-                    onBackButtonClicked()
+                navigationIcon = {
+                    ToolbarClickableIcon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        onIconClicked = {
+                            onBackButtonClicked()
+                        }
+                    )
+                },
+                actions = {
+                    ToolbarClickableIcon(
+                        imageVector = Icons.Outlined.Edit,
+                        onIconClicked = {
+                            onBackButtonClicked()
+                        }
+                    )
+
+                    ToolbarClickableIcon(
+                        imageVector = Icons.Outlined.Settings,
+                        onIconClicked = {
+                            onBackButtonClicked()
+                        }
+                    )
                 }
             )
         }
