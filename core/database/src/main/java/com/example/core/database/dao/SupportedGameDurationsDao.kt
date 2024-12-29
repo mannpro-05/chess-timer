@@ -18,7 +18,7 @@ interface SupportedGameDurationsDao {
     suspend fun upsertGameDurations(runs: List<SupportedGameDurationEntity>)
 
     @Query("SELECT * FROM supportedgamedurationentity ORDER BY `order` ASC")
-    fun getGameDurations(): Flow<SupportedGameDurationEntity>
+    fun getGameDurations(): Flow<List<SupportedGameDurationEntity>>
 
     @Query("DELETE FROM supportedgamedurationentity WHERE gameDurationId = :id")
     suspend fun deleteGameDuration(id: Int)

@@ -10,5 +10,7 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     singleOf(::UserPreferenceGameDuration).bind<ChessGameDurationRepository>()
-    singleOf(::SelectGameDurationRepositoryImpl).bind<SelectGameDurationRepository>()
+    factory {
+        SelectGameDurationRepositoryImpl(get(), get(), get())
+    }.bind<SelectGameDurationRepository>()
 }
