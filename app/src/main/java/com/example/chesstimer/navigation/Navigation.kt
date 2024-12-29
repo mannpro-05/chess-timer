@@ -86,6 +86,9 @@ private fun NavGraphBuilder.appGraph(navController: NavHostController) {
                 state = state,
                 onAction = {
                     viewModel.onAction(it)
+                },
+                onBackButtonClicked = {
+                    navController.popBackStack()
                 }
             )
         }

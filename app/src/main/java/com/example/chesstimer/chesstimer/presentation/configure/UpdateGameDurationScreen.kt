@@ -1,5 +1,6 @@
 package com.example.chesstimer.chesstimer.presentation.configure
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,9 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.RadioButton
@@ -32,6 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.chesstimer.chesstimer.presentation.configure.component.Dialog
+import com.example.core.presentation.components.ChessTimerScaffold
+import com.example.core.presentation.components.ChessTimerTopAppBar
 import com.example.core.presentation.ui.theme.ConfigurationScreenSecondaryColor
 import com.example.core.presentation.ui.theme.PrimaryColor
 import com.example.core.presentation.ui.theme.SurfaceColor
@@ -40,6 +46,7 @@ import com.example.core.presentation.ui.theme.SurfaceColor
 fun UpdateGameDurationScreen(
     state: SelectGameDurationState,
     onAction: (SelectGameDurationAction) -> Unit,
+    onBackButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val openAlertDialog = remember { mutableStateOf(false) }
@@ -63,48 +70,61 @@ fun UpdateGameDurationScreen(
         )
     }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .background(SurfaceColor)
-            .padding(vertical = 8.dp)
-    ) {
-        Text(
-            text = "Presets",
-            fontSize = 12.sp,
-            color = ConfigurationScreenSecondaryColor,
-            modifier = Modifier.padding(horizontal = 12.dp)
-        )
-        GameDurationList(
-            state = state,
-            onItemSelected = { selectedIndex ->
-                onAction(SelectGameDurationAction.OnDurationSelected(selectedIndex))
-            },
+    ChessTimerScaffold(
+        topAppBar = {
+            ChessTimerTopAppBar(
+                title = "Time Configuration",
+                hasBackButton = true,
+                onBackButtonClicked = {
+                    onBackButtonClicked()
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
-                .weight(1f) // Take all remaining space
-                .fillMaxWidth()
-        )
-        Button(
-            onClick = {
-                onAction(SelectGameDurationAction.OnStartButtonClicked)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = PrimaryColor
-            ),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-                .padding(horizontal = 12.dp)
-                .height(50.dp)
+                .fillMaxSize()
+                .background(SurfaceColor)
+                .padding(paddingValues)
+                .padding(vertical = 8.dp)
         ) {
             Text(
-                text = "Start",
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                text = "Presets",
+                fontSize = 12.sp,
+                color = ConfigurationScreenSecondaryColor,
+                modifier = Modifier.padding(horizontal = 12.dp)
             )
+            GameDurationList(
+                state = state,
+                onItemSelected = { selectedIndex ->
+                    onAction(SelectGameDurationAction.OnDurationSelected(selectedIndex))
+                },
+                modifier = Modifier
+                    .weight(1f) // Take all remaining space
+                    .fillMaxWidth()
+            )
+            Button(
+                onClick = {
+                    onAction(SelectGameDurationAction.OnStartButtonClicked)
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = PrimaryColor
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+                    .padding(horizontal = 12.dp)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = "Start",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            }
         }
     }
 }
@@ -216,6 +236,9 @@ private fun UpdateGameDurationScreenPreview() {
             )
         ),
         onAction = {
+
+        },
+        onBackButtonClicked = {
 
         }
     )

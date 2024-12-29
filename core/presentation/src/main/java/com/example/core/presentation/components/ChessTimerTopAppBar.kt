@@ -25,7 +25,7 @@ fun ChessTimerTopAppBar(
     modifier: Modifier = Modifier,
     title: String,
     hasBackButton: Boolean,
-    onBackButtonClicked: () -> Unit,
+    onBackButtonClicked: () -> Unit = {},
 ) {
     TopAppBar(
         title = {
