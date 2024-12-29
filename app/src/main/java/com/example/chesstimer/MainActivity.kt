@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import com.example.chesstimer.navigation.NavigationRoot
-import com.example.chesstimer.ui.theme.ChessTimerTheme
+import com.example.core.presentation.ui.theme.ChessTimerTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

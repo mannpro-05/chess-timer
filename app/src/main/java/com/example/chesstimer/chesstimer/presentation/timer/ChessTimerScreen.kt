@@ -25,13 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.chesstimer.R
-import com.example.chesstimer.ui.theme.ActiveTimerColor
-import com.example.chesstimer.ui.theme.ActiveTimerTextColor
-import com.example.chesstimer.ui.theme.ConsoleColor
-import com.example.chesstimer.ui.theme.ConsoleIconColor
-import com.example.chesstimer.ui.theme.InActiveTimerColor
-import com.example.chesstimer.ui.theme.InActiveTimerTextColor
-import com.example.chesstimer.ui.theme.TimeoutReachedColor
+import com.example.core.presentation.ui.theme.ActiveTimerColor
+import com.example.core.presentation.ui.theme.ActiveTimerTextColor
+import com.example.core.presentation.ui.theme.ConsoleColor
+import com.example.core.presentation.ui.theme.ConsoleIconColor
+import com.example.core.presentation.ui.theme.InActiveTimerColor
+import com.example.core.presentation.ui.theme.InActiveTimerTextColor
+import com.example.core.presentation.ui.theme.TimeoutReachedColor
 
 @Composable
 fun ChessTimerScreen(

@@ -32,9 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.chesstimer.chesstimer.presentation.configure.component.Dialog
-import com.example.chesstimer.ui.theme.ConfigurationScreenSecondaryColor
-import com.example.chesstimer.ui.theme.PrimaryColor
-import com.example.chesstimer.ui.theme.SurfaceColor
+import com.example.core.presentation.ui.theme.ConfigurationScreenSecondaryColor
+import com.example.core.presentation.ui.theme.PrimaryColor
+import com.example.core.presentation.ui.theme.SurfaceColor
 
 @Composable
 fun UpdateGameDurationScreen(
@@ -101,6 +101,7 @@ fun UpdateGameDurationScreen(
         ) {
             Text(
                 text = "Start",
+                color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )

@@ -1,4 +1,4 @@
-package com.example.chesstimer.ui.theme
+package com.example.core.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -22,3 +22,4 @@ val TimeoutReachedColor = Color(0xffDC143C)
 
 val ConfigurationScreenSecondaryColor = Color(0xff838281)
 val SurfaceColor = Color(0xff262421)
+val ToolbarColor = Color(0xFF322e2b)
