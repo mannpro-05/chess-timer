@@ -1,5 +1,6 @@
 package com.example.chesstimer.chesstimer.presentation.timer
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chesstimer.chesstimer.domain.ChessGameDurationRepository
@@ -38,14 +39,18 @@ class ChessTimerViewModel(private val repository: ChessGameDurationRepository) :
         0L
     )
 
-    private var selectedGameTime = 0L
+    private var currentGameTime = 0L
 
     private val _events = Channel<ChessTimerEvent>()
     val events = _events.receiveAsFlow()
 
+    val state = _state.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5000L), ChessTimerState()
+    )
+
     init {
-        repository.gameDuration.onEach { selectedTime ->
-            selectedGameTime = selectedTime
+        repository.gameDuration.onEach { userPreferredGameTime ->
+            currentGameTime = userPreferredGameTime
             resetTimer()
         }.launchIn(viewModelScope)
 
@@ -82,8 +87,8 @@ class ChessTimerViewModel(private val repository: ChessGameDurationRepository) :
     private fun resetTimer() {
         countDownJob?.cancel()
         isTimerRunning = false
-        playerOneRemainingTime.update { selectedGameTime.milliseconds.inWholeMilliseconds }
-        playerTwoRemainingTime.update { selectedGameTime.milliseconds.inWholeMilliseconds }
+        playerOneRemainingTime.update { currentGameTime.milliseconds.inWholeMilliseconds }
+        playerTwoRemainingTime.update { currentGameTime.milliseconds.inWholeMilliseconds }
         _state.update {
             it.copy(
                 isPlayerOneTimerActive = false,
@@ -94,10 +99,6 @@ class ChessTimerViewModel(private val repository: ChessGameDurationRepository) :
             )
         }
     }
-
-    val state = _state.stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5000L), ChessTimerState()
-    )
 
     private fun startPlayerOneTimer() {
         startPlayerTimer(
@@ -157,7 +158,10 @@ class ChessTimerViewModel(private val repository: ChessGameDurationRepository) :
                 isTimerRunning = false
                 viewModelScope.launch {
                     _events.send(
-                        ChessTimerEvent.LaunchSelectGameDuration(isGameRunning())
+                        ChessTimerEvent.LaunchSelectGameDuration(
+                            isGameRunning = isGameRunning(),
+                            currentGameTime = currentGameTime
+                        )
                     )
                 }
             }
@@ -170,7 +174,7 @@ class ChessTimerViewModel(private val repository: ChessGameDurationRepository) :
     }
 
     private fun isGameRunning(): Boolean =
-        isTimerRunning || (playerOneRemainingTime.value != selectedGameTime || playerTwoRemainingTime.value != selectedGameTime)
+        isTimerRunning || (playerOneRemainingTime.value != currentGameTime || playerTwoRemainingTime.value != currentGameTime)
 
     private fun startPlayerTimer(
         flow: MutableStateFlow<Long>,

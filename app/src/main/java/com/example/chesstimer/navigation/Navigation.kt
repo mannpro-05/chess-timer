@@ -1,5 +1,6 @@
 package com.example.chesstimer.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -15,6 +16,10 @@ import com.example.chesstimer.chesstimer.presentation.configure.UpdateGameDurati
 import com.example.chesstimer.chesstimer.presentation.timer.ChessTimerEvent
 import com.example.chesstimer.chesstimer.presentation.timer.ChessTimerScreen
 import com.example.chesstimer.chesstimer.presentation.timer.ChessTimerViewModel
+import com.example.chesstimer.navigation.NavigationHelper.CHESS_GAME_TIMER_CONFIG_ROUTE
+import com.example.chesstimer.navigation.NavigationHelper.CHESS_GAME_TIMER_ROUTE
+import com.example.chesstimer.navigation.NavigationHelper.CURRENT_GAME_TIME_ARG
+import com.example.chesstimer.navigation.NavigationHelper.IS_GAME_RUNNING_ARG
 import com.example.chesstimer.util.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -35,17 +40,17 @@ fun NavigationRoot(
 
 private fun NavGraphBuilder.appGraph(navController: NavHostController) {
     navigation(
-        startDestination = "timer",
+        startDestination = CHESS_GAME_TIMER_ROUTE,
         route = "chess_game"
     ) {
-        composable(route = "timer") {
+        composable(route = CHESS_GAME_TIMER_ROUTE) {
             val viewModel: ChessTimerViewModel = koinViewModel()
             val state = viewModel.state.collectAsStateWithLifecycle().value
 
             ObserveAsEvents(events = viewModel.events) { chessTimerEvent ->
                 when (chessTimerEvent) {
                     is ChessTimerEvent.LaunchSelectGameDuration -> {
-                        navController.navigate("configuration/${chessTimerEvent.isGameRunning}")
+                        navController.navigate("$CHESS_GAME_TIMER_CONFIG_ROUTE/${chessTimerEvent.isGameRunning}/${chessTimerEvent.currentGameTime}")
                     }
                 }
             }
@@ -59,15 +64,16 @@ private fun NavGraphBuilder.appGraph(navController: NavHostController) {
         }
 
         composable(
-            route = "configuration/{isGameRunning}",
-            arguments = listOf(navArgument("isGameRunning") {
+            route = "$CHESS_GAME_TIMER_CONFIG_ROUTE/{$IS_GAME_RUNNING_ARG}/{$CURRENT_GAME_TIME_ARG}",
+            arguments = listOf(navArgument(IS_GAME_RUNNING_ARG) {
                 type = NavType.BoolType
             }
             )
         ) { backStackEntry ->
-            val isGameRunning = backStackEntry.arguments?.getBoolean("isGameRunning") ?: false
+            val isGameRunning = backStackEntry.arguments?.getBoolean(IS_GAME_RUNNING_ARG) ?: false
+            val currentGameDuration = backStackEntry.arguments?.getString(CURRENT_GAME_TIME_ARG)?.toLong() ?: 0L
             val viewModel: SelectGameDurationViewModel =
-                koinViewModel { parametersOf(isGameRunning) }
+                koinViewModel { parametersOf(isGameRunning, currentGameDuration) }
             val state = viewModel.state.collectAsStateWithLifecycle().value
             ObserveAsEvents(events = viewModel.event) { chessTimerEvent ->
                 when (chessTimerEvent) {
@@ -84,4 +90,12 @@ private fun NavGraphBuilder.appGraph(navController: NavHostController) {
             )
         }
     }
+}
+
+object NavigationHelper {
+    const val IS_GAME_RUNNING_ARG = "isGameRunning"
+    const val CURRENT_GAME_TIME_ARG = "currentGameTime"
+    const val APP_ENTRY_ROUTE = "chess_timer"
+    const val CHESS_GAME_TIMER_ROUTE = "timer"
+    const val CHESS_GAME_TIMER_CONFIG_ROUTE = "configuration"
 }
