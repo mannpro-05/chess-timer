@@ -1,7 +1,6 @@
 package com.example.chesstimer.datastore
 
 import android.content.Context
-import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import org.koin.dsl.module
 
