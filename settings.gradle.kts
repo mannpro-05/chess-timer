@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ChessTimer"
 include(":app")
- 
+include(":core:presentation")

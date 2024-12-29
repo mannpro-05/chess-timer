@@ -1,6 +1,5 @@
 package com.example.chesstimer.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -20,7 +19,7 @@ import com.example.chesstimer.navigation.NavigationHelper.CHESS_GAME_TIMER_CONFI
 import com.example.chesstimer.navigation.NavigationHelper.CHESS_GAME_TIMER_ROUTE
 import com.example.chesstimer.navigation.NavigationHelper.CURRENT_GAME_TIME_ARG
 import com.example.chesstimer.navigation.NavigationHelper.IS_GAME_RUNNING_ARG
-import com.example.chesstimer.util.ObserveAsEvents
+import com.example.core.presentation.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -71,7 +70,8 @@ private fun NavGraphBuilder.appGraph(navController: NavHostController) {
             )
         ) { backStackEntry ->
             val isGameRunning = backStackEntry.arguments?.getBoolean(IS_GAME_RUNNING_ARG) ?: false
-            val currentGameDuration = backStackEntry.arguments?.getString(CURRENT_GAME_TIME_ARG)?.toLong() ?: 0L
+            val currentGameDuration =
+                backStackEntry.arguments?.getString(CURRENT_GAME_TIME_ARG)?.toLong() ?: 0L
             val viewModel: SelectGameDurationViewModel =
                 koinViewModel { parametersOf(isGameRunning, currentGameDuration) }
             val state = viewModel.state.collectAsStateWithLifecycle().value
