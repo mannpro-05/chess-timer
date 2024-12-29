@@ -1,5 +1,6 @@
 package com.example.chesstimer.chesstimer.presentation.configure
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chesstimer.chesstimer.domain.SelectGameDurationRepository
@@ -26,6 +27,8 @@ class SelectGameDurationViewModel(
     private var _state = MutableStateFlow(
         SelectGameDurationState(
             durations = repository.provideSupportedGameDurations().toUiDurationList(),
+            editableItems = repository.provideSupportedGameDurations().toUiDurationList()
+                .toEditableItems(),
             selectedDurationPosition = findSelectedPos()
         )
     )
@@ -56,6 +59,23 @@ class SelectGameDurationViewModel(
                 updateGameDuration()
             }
 
+            is SelectGameDurationAction.OnEditItemChecked -> {
+                _state.update {
+                    it.copy(
+                        editableItems = it.editableItems.mapIndexed { index, item ->
+                            if (index == action.itemPosition) {
+                                item.copy(
+                                    isSelected = action.isChecked
+                                )
+                            } else {
+                                item
+                            }
+                        }
+                    )
+                }
+                Log.d("zzz", "zzz ${_state.value.editableItems}")
+            }
+
             SelectGameDurationAction.OnConfirmNewGameDuration -> {
                 _state.update {
                     it.copy(
@@ -73,6 +93,14 @@ class SelectGameDurationViewModel(
                 _state.update {
                     it.copy(
                         shouldShowConfirmationDialog = false
+                    )
+                }
+            }
+
+            SelectGameDurationAction.OnEditButtonClicked -> {
+                _state.update {
+                    it.copy(
+                        isInEditMode = true
                     )
                 }
             }
@@ -96,4 +124,11 @@ class SelectGameDurationViewModel(
 
 private fun List<Long>.toUiDurationList(): List<String> = map {
     "${it.milliseconds.inWholeMinutes} min"
+}
+
+private fun List<String>.toEditableItems(): List<EditableItem> = map {
+    EditableItem(
+        item = it,
+        isSelected = false
+    )
 }
